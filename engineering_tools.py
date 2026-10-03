@@ -1,7 +1,7 @@
 import math
 
 
-def spindle_speed(cutting_speed, diameter):
+def spindle_speed(cutting_speed: float, diameter: float) -> float:
     if cutting_speed <= 0:
         raise ValueError("Cutting speed must be greater than zero.")
 
@@ -11,7 +11,7 @@ def spindle_speed(cutting_speed, diameter):
     return (1000 * cutting_speed) / (math.pi * diameter)
 
 
-def feed_rate(spindle_speed, teeth, feed_per_tooth):
+def feed_rate(spindle_speed: float, teeth: int, feed_per_tooth: float) -> float:
     if spindle_speed <= 0:
         raise ValueError("Spindle speed must be greater than zero.")
 
@@ -23,7 +23,7 @@ def feed_rate(spindle_speed, teeth, feed_per_tooth):
 
     return spindle_speed * teeth * feed_per_tooth
 
-def cutting_time(distance, feed_rate):
+def cutting_time(distance: float, feed_rate: float) -> float:
     if distance <= 0:
         raise ValueError("Distance must be greater than zero.")
 
