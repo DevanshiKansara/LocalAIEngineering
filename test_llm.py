@@ -1,10 +1,10 @@
 from ollama import chat
-from engineering_tools import spindle_speed
+from engineering_tools import spindle_speed, feed_rate
 
 
 messages = []
 
-tools = [spindle_speed]
+tools = [spindle_speed, feed_rate]
 
 
 while True:
@@ -49,6 +49,22 @@ while True:
                 messages.append({
                     "role": "tool",
                     "tool_name": "spindle_speed",
+                    "content": str(result),
+                })
+
+            elif tool_call.function.name == "feed_rate":
+
+                spindle = float(tool_call.function.arguments["spindle_speed"])
+                teeth = int(tool_call.function.arguments["teeth"])
+                feed_per_tooth = float(tool_call.function.arguments["feed_per_tooth"])
+
+                result = feed_rate(spindle, teeth, feed_per_tooth)
+
+                print("\nPython calculation:", result, "mm/min")
+
+                messages.append({
+                    "role": "tool",
+                    "tool_name": "feed_rate",
                     "content": str(result),
                 })
 
