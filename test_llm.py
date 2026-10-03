@@ -1,5 +1,6 @@
 from ollama import chat
 from engineering_tools import spindle_speed, feed_rate
+from tool_registry import tool_registry, execute_tool
 
 
 messages = []
@@ -29,64 +30,31 @@ while True:
 
         for tool_call in response.message.tool_calls:
 
-            print("\nTool requested:", tool_call.function.name)
-            print("Arguments:", tool_call.function.arguments)
+            tool_name = tool_call.function.name
+            arguments = tool_call.function.arguments
 
-            if tool_call.function.name == "spindle_speed":
+            print("\nTool requested:", tool_name)
+            print("Arguments:", arguments)
 
-                diameter = float(
-                    tool_call.function.arguments["diameter"].replace(" mm", "")
-                )
+            try:
+                result = execute_tool(tool_name, arguments)
 
-                cutting_speed = float(
-                    tool_call.function.arguments["cutting_speed"].replace(" m/min", "")
-                )
+                print("\nPython calculation:", result)
 
-                try:
-                    result = spindle_speed(cutting_speed, diameter)
+                messages.append({
+                    "role": "tool",
+                    "tool_name": tool_name,
+                    "content": str(result),
+                })
 
-                    print("\nPython calculation:", result, "RPM")
+            except ValueError as error:
+                print("\nPython tool error:", error)
 
-                    messages.append({
-                        "role": "tool",
-                        "tool_name": "spindle_speed",
-                        "content": str(result),
-                    })
-
-                except ValueError as error:
-                    print("\nPython tool error:", error)
-
-                    messages.append({
-                        "role": "tool",
-                        "tool_name": "spindle_speed",
-                        "content": f"Tool error: {error}",
-                    })
-
-            elif tool_call.function.name == "feed_rate":
-
-                spindle = float(tool_call.function.arguments["spindle_speed"])
-                teeth = int(tool_call.function.arguments["teeth"])
-                feed_per_tooth = float(tool_call.function.arguments["feed_per_tooth"])
-
-                try:
-                    result = feed_rate(spindle, teeth, feed_per_tooth)
-
-                    print("\nPython calculation:", result, "mm/min")
-
-                    messages.append({
-                        "role": "tool",
-                        "tool_name": "feed_rate",
-                        "content": str(result),
-                    })
-
-                except ValueError as error:
-                    print("\nPython tool error:", error)
-
-                    messages.append({
-                        "role": "tool",
-                        "tool_name": "feed_rate",
-                        "content": f"Tool error: {error}",
-                    })
+                messages.append({
+                    "role": "tool",
+                    "tool_name": tool_name,
+                    "content": f"Tool error: {error}",
+                })
 
         final_response = chat(
             model="qwen3:4b",
