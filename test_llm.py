@@ -24,8 +24,27 @@ while True:
         tools=tools,
     )
 
-    print("\nAI:", response.message.content)
+    if response.message.tool_calls:
+        for tool_call in response.message.tool_calls:
 
-    print("\nTool calls:", response.message.tool_calls)
+            print("\nTool requested:", tool_call.function.name)
+            print("Arguments:", tool_call.function.arguments)
+
+            if tool_call.function.name == "spindle_speed":
+
+                diameter = float(
+                    tool_call.function.arguments["diameter"].replace(" mm", "")
+                )
+
+                cutting_speed = float(
+                    tool_call.function.arguments["cutting_speed"].replace(" m/min", "")
+                )
+
+                result = spindle_speed(cutting_speed, diameter)
+
+                print("\nPython calculation:", result, "RPM")
+
+    else:
+        print("\nAI:", response.message.content)
 
     messages.append(response.message)
