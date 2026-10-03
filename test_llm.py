@@ -25,6 +25,8 @@ while True:
     )
 
     if response.message.tool_calls:
+        messages.append(response.message)
+
         for tool_call in response.message.tool_calls:
 
             print("\nTool requested:", tool_call.function.name)
@@ -44,7 +46,23 @@ while True:
 
                 print("\nPython calculation:", result, "RPM")
 
-    else:
-        print("\nAI:", response.message.content)
+                messages.append({
+                    "role": "tool",
+                    "tool_name": "spindle_speed",
+                    "content": str(result),
+                })
 
-    messages.append(response.message)
+        final_response = chat(
+            model="qwen3:4b",
+            messages=messages,
+            tools=tools,
+        )
+
+        messages.append(final_response.message)
+
+        print("\nAI:", final_response.message.content)
+
+    else:
+        messages.append(response.message)
+
+        print("\nAI:", response.message.content)
