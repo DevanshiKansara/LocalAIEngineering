@@ -22,3 +22,12 @@ def feed_rate(spindle_speed, teeth, feed_per_tooth):
         raise ValueError("Feed per tooth must be greater than zero.")
 
     return spindle_speed * teeth * feed_per_tooth
+
+def cutting_time(distance, feed_rate):
+    if distance <= 0:
+        raise ValueError("Distance must be greater than zero.")
+
+    if feed_rate <= 0:
+        raise ValueError("Feed rate must be greater than zero.")
+
+    return distance / feed_rate

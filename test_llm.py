@@ -1,11 +1,11 @@
 from ollama import chat
-from engineering_tools import spindle_speed, feed_rate
+from engineering_tools import spindle_speed, feed_rate, cutting_time
 from tool_registry import tool_registry, execute_tool
 
 
 messages = []
 
-tools = [spindle_speed, feed_rate]
+tools = [spindle_speed, feed_rate, cutting_time]
 
 
 while True:
