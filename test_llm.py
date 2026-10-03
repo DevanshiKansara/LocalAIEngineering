@@ -42,15 +42,25 @@ while True:
                     tool_call.function.arguments["cutting_speed"].replace(" m/min", "")
                 )
 
-                result = spindle_speed(cutting_speed, diameter)
+                try:
+                    result = spindle_speed(cutting_speed, diameter)
 
-                print("\nPython calculation:", result, "RPM")
+                    print("\nPython calculation:", result, "RPM")
 
-                messages.append({
-                    "role": "tool",
-                    "tool_name": "spindle_speed",
-                    "content": str(result),
-                })
+                    messages.append({
+                        "role": "tool",
+                        "tool_name": "spindle_speed",
+                        "content": str(result),
+                    })
+
+                except ValueError as error:
+                    print("\nPython tool error:", error)
+
+                    messages.append({
+                        "role": "tool",
+                        "tool_name": "spindle_speed",
+                        "content": f"Tool error: {error}",
+                    })
 
             elif tool_call.function.name == "feed_rate":
 
@@ -58,15 +68,25 @@ while True:
                 teeth = int(tool_call.function.arguments["teeth"])
                 feed_per_tooth = float(tool_call.function.arguments["feed_per_tooth"])
 
-                result = feed_rate(spindle, teeth, feed_per_tooth)
+                try:
+                    result = feed_rate(spindle, teeth, feed_per_tooth)
 
-                print("\nPython calculation:", result, "mm/min")
+                    print("\nPython calculation:", result, "mm/min")
 
-                messages.append({
-                    "role": "tool",
-                    "tool_name": "feed_rate",
-                    "content": str(result),
-                })
+                    messages.append({
+                        "role": "tool",
+                        "tool_name": "feed_rate",
+                        "content": str(result),
+                    })
+
+                except ValueError as error:
+                    print("\nPython tool error:", error)
+
+                    messages.append({
+                        "role": "tool",
+                        "tool_name": "feed_rate",
+                        "content": f"Tool error: {error}",
+                    })
 
         final_response = chat(
             model="qwen3:4b",
