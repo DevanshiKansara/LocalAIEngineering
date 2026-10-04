@@ -2,6 +2,9 @@ from ollama import chat
 from engineering_tools import spindle_speed, feed_rate, cutting_time
 from tool_registry import tool_registry, execute_tool
 
+print("=" * 60)
+print("        Local AI Engineering Assistant")
+print("=" * 60)
 
 messages = [
     {
@@ -54,13 +57,17 @@ while True:
             tool_name = tool_call.function.name
             arguments = tool_call.function.arguments
 
-            print("\nTool requested:", tool_name)
-            print("Arguments:", arguments)
+            print(f"\n[Tool] {tool_name}")
 
             try:
                 result = execute_tool(tool_name, arguments)
 
-                print("\nPython calculation:", result)
+                if tool_name == "spindle_speed":
+                    print(f"      → {result:.2f} RPM")
+                elif tool_name == "feed_rate":
+                    print(f"      → {result:.2f} mm/min")
+                elif tool_name == "cutting_time":
+                    print(f"      → {result:.4f} min")
 
                 messages.append({
                     "role": "tool",
@@ -106,13 +113,17 @@ while True:
                     tool_name = tool_call.function.name
                     arguments = tool_call.function.arguments
 
-                    print("\nTool requested:", tool_name)
-                    print("Arguments:", arguments)
+                    print(f"\n[Tool] {tool_name}")
 
                     try:
                         result = execute_tool(tool_name, arguments)
 
-                        print("\nPython calculation:", result)
+                        if tool_name == "spindle_speed":
+                            print(f"      → {result:.2f} RPM")
+                        elif tool_name == "feed_rate":
+                            print(f"      → {result:.2f} mm/min")
+                        elif tool_name == "cutting_time":
+                            print(f"      → {result:.4f} min")
 
                         messages.append({
                             "role": "tool",
