@@ -141,11 +141,11 @@ The language model is used for natural-language understanding and tool orchestra
 
 ### Engineering Tools
 
-| Tool | Purpose |
-|---|---|
-| `spindle_speed()` | Calculates spindle speed from cutting speed and tool diameter |
-| `feed_rate()` | Calculates feed rate from spindle speed, number of teeth, and feed per tooth |
-| `cutting_time()` | Calculates machining time from travel distance and feed rate |
+| Tool | Inputs | Output |
+|---|---|---|
+| `spindle_speed()` | Cutting speed (m/min), tool diameter (mm) | Spindle speed (RPM) |
+| `feed_rate()` | Spindle speed (RPM), number of teeth, feed per tooth (mm/tooth) | Feed rate (mm/min) |
+| `cutting_time()` | Travel distance (mm), feed rate (mm/min) | Cutting time (min) |
 
 ## Demo
 
