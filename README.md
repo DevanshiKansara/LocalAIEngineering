@@ -175,8 +175,10 @@ LocalAIEngineering/
 ├── engineering_tools.py
 ├── tool_registry.py
 ├── test_llm.py
+├── requirements.txt
 ├── README.md
 └── .gitignore
+```
 
 ## Example: Multi-Step Engineering Calculation
 
