@@ -136,6 +136,19 @@ Demonstrates:
 
 `Invalid input -> Python validation -> controlled error response`
 
+## Project Structure
+
+```text
+LocalAIEngineering/
+├── demo/
+│   ├── LocalAIEngineering_demo_error.mp4
+│   └── LocalAIEngineering_demo_success.mp4
+├── engineering_tools.py
+├── tool_registry.py
+├── test_llm.py
+├── README.md
+└── .gitignore
+
 ## Example: Multi-Step Engineering Calculation
 
 A single natural-language request can trigger a sequence of dependent engineering calculations.
