@@ -28,6 +28,19 @@ The system performs:
 
 The language model handles natural-language understanding and tool orchestration, while Python performs the numerical calculations and input validation.
 
+## How It Works
+
+The assistant uses a local language model to understand engineering requests and decide which deterministic Python tools are required.
+
+1. The user provides an engineering request in natural language.
+2. Qwen3:4B interprets the request and selects the required engineering tool.
+3. Python executes the selected calculation with explicit inputs and validation.
+4. The tool result is returned to the language model.
+5. The language model interprets the result and provides the final response.
+6. For multi-step requests, the model can chain multiple tools using the output of one calculation as the input to the next.
+
+This separates **language understanding** from **numerical computation**: the LLM handles reasoning about the request and Python performs the actual engineering calculations.
+
 ## Architecture
 
 ```mermaid
